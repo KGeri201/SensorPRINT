@@ -3,7 +3,6 @@ package com.sensorprint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-//import android.os.Environment;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,11 +38,11 @@ public class Recorder {
                 default: return;
             }
 
-//            File file = new File(Environment.getExternalStoragePublicDirectory(null), name +".csv");
             File file = new File(context.getExternalFilesDir(null), path+File.separator+name +".csv");
 
             if (!file.exists()) {
-                new File(context.getExternalFilesDir(null), path).mkdirs();
+                if (!path.isEmpty())
+                    file.getParentFile().mkdirs();
                 file.createNewFile();
 
                 write(file, header);
