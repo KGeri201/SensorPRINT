@@ -16,6 +16,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs{
+      release{
+        storeFile System.getenv("SIGNING_KEY_STORE")
+        storePassword System.getenv("SIGNING_STORE_PASSWORD")
+        keyAlias System.getenv("SIGNING_KEY_ALIAS")
+        keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+      }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -25,6 +34,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -32,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
