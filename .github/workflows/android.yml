@@ -33,8 +33,11 @@ jobs:
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
+      env:
+        BUILD_TOOLS_VERSION: "35.0.2"
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.4.3
       with:
-        name: Build
+        # name: Build
         path: ${{ steps.sign_app.outputs.signedReleaseFile }}
