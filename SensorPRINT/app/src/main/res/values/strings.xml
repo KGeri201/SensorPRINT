@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SensorPRINT</string>
+    <string name="button_name">Record</string>
+    <string name="checkbox_name">Apply Patch</string>
+</resources>
