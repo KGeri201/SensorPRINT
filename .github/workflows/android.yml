@@ -45,4 +45,4 @@ jobs:
       uses: actions/upload-artifact@v4.4.3
       with:
         # name: Build
-        path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+        path: app/release/app-release.apk
