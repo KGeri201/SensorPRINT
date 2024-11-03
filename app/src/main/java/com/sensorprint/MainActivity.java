@@ -7,12 +7,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,20 +20,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         TabLayout tablayout = findViewById(R.id.tab_layout);
         ViewPager2 viewpager2 = findViewById(R.id.pager);
-
         viewpager2.setAdapter(new Adapter(this));
 
-        new TabLayoutMediator(tablayout, viewpager2, (tab, position) -> tab.setText(Utils.TAB_NAMES[position])).attach();
+        new TabLayoutMediator(tablayout, viewpager2, (tab, position) ->
+                tab.setText(Utils.TAB_NAMES[position])
+        ).attach();
 
         for (int sensor : Utils.SENSORS) {
             Utils.original_sensors.put(sensor, null);
@@ -46,10 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        Utils.getPermissions(this);
-
-        Utils.clean(this, "before");
-        Utils.clean(this, "after");
+        Permit.getPermissions(this);
     }
 
     @Override

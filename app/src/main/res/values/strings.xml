@@ -1,11 +1,23 @@
 <resources>
-    <string name="app_name">SensorPRINT</string>
-    <string name="button_name">Record</string>
-    <string name="checkbox_name">Apply Patch</string>
+    <string name="app_name" translatable="false">SensorPRINT</string>
+    <string name="record_btn">Record</string>
+    <string name="apply_chk">Apply Patch</string>
     <string name="home_tab">Home</string>
     <string name="settings_tab">Settings</string>
     <string name="save_btn">Save</string>tab_description
-    <string name="tab_description">Navigation Bar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_dsc">Navigation Bar</string>
+
+    <string name="interval_stg">Interval</string>
+    <string name="duration_stg">Duration</string>
+    <string name="lo_acc_stg">Lambda Offset ACC</string>
+    <string name="lo_gyro_stg">Lambda Offset GYRO</string>
+    <string name="lg_acc_stg">Lambda Gain ACC</string>
+    <string name="lg_gyro_stg">Lambda Gain GYRO</string>
+
+    <string name="interval_stg_def">250</string>
+    <string name="duration_stg_def">60000</string>
+    <string name="lo_acc_stg_def">0.5</string>
+    <string name="lo_gyro_stg_def">0.1</string>
+    <string name="lg_acc_stg_def">0.5</string>
+    <string name="lg_gyro_stg_def">0.5</string>
 </resources>

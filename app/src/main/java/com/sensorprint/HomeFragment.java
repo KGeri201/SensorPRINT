@@ -1,8 +1,9 @@
 package com.sensorprint;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -12,53 +13,50 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
-    private CheckBox manipulate;
-    private Button start;
+    private Button record;
+    private CheckBox patch;
 
-    @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat timer_format = new SimpleDateFormat("mm:ss");
-
-    private final CountDownTimer timer = new CountDownTimer(Utils.duration, Utils.interval) {
-        public void onTick(long millisUntilFinished) {
-            for (int sensor : Utils.SENSORS) {
-                Utils.recordValues(requireActivity(),
-                        Objects.requireNonNull(Utils.original_sensors.get(sensor)), "before");
-                if (manipulate.isChecked())
-                    Utils.recordValues(requireActivity(),
-                            Objects.requireNonNull(Utils.manipulated_sensors.get(sensor)), "after");
-            }
-
-            start.setText(timer_format.format(new Date(millisUntilFinished)));
-        }
-
-        public void onFinish() {
-            manipulate.setEnabled(true);
-            start.setEnabled(true);
-            start.setText(getString(R.string.button_name));
-        }
-    };
-
-    public void onTimerStart() {
-        manipulate.setEnabled(false);
-        start.setEnabled(false);
-        timer.start();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_home, container, false);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        manipulate = view.findViewById(R.id.apply_patch);
+        patch = view.findViewById(R.id.apply_chk);
 
-        start = view.findViewById(R.id.record);
-        start.setText(getString(R.string.button_name));
-        start.setOnClickListener(v -> onTimerStart());
+        record = view.findViewById(R.id.record_btn);
+        record.setOnClickListener(v -> onTimerStart());
 
-        return view;
+        Utils.recording_in_progress.observe(requireActivity(), item -> {
+            patch.setEnabled(!item);
+            record.setEnabled(!item);
+        });
+    }
+
+    public void onTimerStart() {
+        Utils.recording_in_progress.setValue(true);
+
+        Recorder.clean(requireContext(), "before");
+        Recorder.clean(requireContext(), "after");
+
+        new CountDownTimer(Utils.duration.getValue(), Utils.interval.getValue()) {
+            public void onTick(long millisUntilFinished) {
+                Utils.saveSensorValues((Activity) getContext(), patch.isChecked());
+                record.setText(Utils.timer.format(new Date(millisUntilFinished)));
+            }
+
+            public void onFinish() {
+                Utils.recording_in_progress.setValue(false);
+                record.setText(getString(R.string.record_btn));
+            }
+        }.start();
     }
 }

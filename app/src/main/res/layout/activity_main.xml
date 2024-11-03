@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text"
         android:background="@color/tab_layout"
-        android:contentDescription="@string/tab_description" />
+        android:contentDescription="@string/tab_dsc" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

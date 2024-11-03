@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/settings"
     tools:context=".SettingsFragment">
 
     <TableLayout
@@ -18,16 +18,19 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/interval_stg" />
 
             <EditText
-                android:id="@+id/interval"
+                android:id="@+id/interval_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="time|datetime" />
+                android:inputType="numberDecimal"
+                android:text="@string/interval_stg_def"
+                android:textColor="@color/text" />
         </TableRow>
 
         <TableRow
@@ -35,16 +38,19 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/duration_stg" />
 
             <EditText
-                android:id="@+id/duration"
+                android:id="@+id/duration_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="time" />
+                android:textColor="@color/text"
+                android:text="@string/duration_stg_def"
+                android:inputType="numberDecimal" />
         </TableRow>
 
     </TableLayout>
@@ -60,15 +66,18 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/lo_acc_stg" />
 
             <EditText
-                android:id="@+id/editTextNumberDecimal"
+                android:id="@+id/lo_acc_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/text"
+                android:text="@string/lo_acc_stg_def"
                 android:inputType="numberDecimal" />
         </TableRow>
 
@@ -77,15 +86,18 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/lo_gyro_stg" />
 
             <EditText
-                android:id="@+id/editTextNumberDecimal"
+                android:id="@+id/lo_gyro_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/text"
+                android:text="@string/lo_gyro_stg_def"
                 android:inputType="numberDecimal" />
         </TableRow>
 
@@ -94,15 +106,18 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/lg_acc_stg" />
 
             <EditText
-                android:id="@+id/editTextNumberDecimal"
+                android:id="@+id/lg_acc_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/text"
+                android:text="@string/lg_acc_stg_def"
                 android:inputType="numberDecimal" />
         </TableRow>
 
@@ -111,26 +126,30 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment" />
+                android:textColor="@color/text"
+                android:text="@string/lg_gyro_stg" />
 
             <EditText
-                android:id="@+id/editTextNumberDecimal"
+                android:id="@+id/lg_gyro_stg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/text"
+                android:text="@string/lg_gyro_stg_def"
                 android:inputType="numberDecimal" />
         </TableRow>
     </TableLayout>
 
     <Button
-        android:id="@+id/save_settings"
+        android:id="@+id/save_btn"
         android:layout_height="50dp"
         android:layout_width="100dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/settings"
         android:layout_marginTop="50dp"
+        android:textColor="@color/text"
         android:text="@string/save_btn"/>
 
     <!--    <Button-->

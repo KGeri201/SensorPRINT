@@ -3,30 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/home"
     tools:context=".HomeFragment">
 
     <Button
-        android:id="@+id/record"
+        android:id="@+id/record_btn"
         android:layout_width="140dp"
         android:layout_height="65dp"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/apply_patch"
-        android:text="@string/button_name"
+        android:layout_above="@+id/apply_chk"
+        android:text="@string/record_btn"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <CheckBox
-        android:id="@+id/apply_patch"
+        android:id="@+id/apply_chk"
         android:layout_width="110dp"
-        android:layout_height="45dp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:buttonTint="@color/white"
-        android:text="@string/checkbox_name"
+        android:text="@string/apply_chk"
         android:textAlignment="center"
         android:textColor="@color/text"
         android:textStyle="bold|italic" />
