@@ -1,7 +1,6 @@
 package com.sensorprint;
 
 import java.util.Random;
-import java.util.Map;
 
 import android.hardware.SensorEvent;
 import android.hardware.Sensor;
@@ -19,22 +18,6 @@ public class Patch {
     private static final int AXIS_X = 0;
     private static final int AXIS_Y = 1;
     private static final int AXIS_Z = 2;
-
-    /**
-     * List of 0 +/- offsets for the different sensors.
-     */
-    private static final Map<Integer, Float> lambda_offsets = Map.of(
-            Sensor.TYPE_ACCELEROMETER, 0.5f,
-            Sensor.TYPE_GYROSCOPE, 0.1f
-    );
-
-    /**
-     * List of 1 +/- gains for the different sensors.
-     */
-    private static final Map<Integer, Float> lambda_gains = Map.of(
-            Sensor.TYPE_ACCELEROMETER, 0.05f,
-            Sensor.TYPE_GYROSCOPE, 0.05f
-    );
 
     /**
      * Gets a random value between the min and max range, inclusive the edges.
@@ -70,8 +53,8 @@ public class Patch {
      * @see SensorEvent
      */
     public static void manipulateValues(SensorEvent event) {
-        float offset = lambda_offsets.getOrDefault(event.sensor.getType(), 0.0f);
-        float gain = lambda_gains.getOrDefault(event.sensor.getType(), 0.0f);
+        float offset = Utils.lambda_offsets.getOrDefault(event.sensor.getType(), 0.0f);
+        float gain = Utils.lambda_gains.getOrDefault(event.sensor.getType(), 0.0f);
 
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:

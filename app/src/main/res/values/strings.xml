@@ -2,4 +2,10 @@
     <string name="app_name">SensorPRINT</string>
     <string name="button_name">Record</string>
     <string name="checkbox_name">Apply Patch</string>
+    <string name="home_tab">Home</string>
+    <string name="settings_tab">Settings</string>
+    <string name="save_btn">Save</string>tab_description
+    <string name="tab_description">Navigation Bar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
