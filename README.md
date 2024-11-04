@@ -7,7 +7,7 @@ It does record the original unchanged values from the sensors and also modified 
 This way the values before and after the patch can be compared more easily.  
 
 ## Usage
-1. Download the latest apk from the [release page](https://github.com/KGeri201/SensorPRINT/releases) and install it on an android device.  
+1. Download the latest apk from the [release page](https://github.com/KGeri201/SensorPRINT/releases/latest) and install it on an android device.  
 2. Check the **Apply Patch** box to record also the modified values for later comparasion.
 3. Start the recording by pressing **Record**.  
 It will record the sensor values for over a minute, in the default intervalls of 250ms.
