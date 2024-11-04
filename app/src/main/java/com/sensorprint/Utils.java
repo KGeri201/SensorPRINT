@@ -19,6 +19,8 @@ import java.util.Objects;
 public class Utils extends ViewModel  {
     public static final int[] SENSORS = {Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_GYROSCOPE};
 
+    public static HashMap<Integer, SensorEvent> sensor_values = new HashMap<>();
+
     public static Map<Integer, MutableLiveData<Float>> lambda_offsets = Map.of(
             Sensor.TYPE_ACCELEROMETER, new MutableLiveData<>(0.5f),
             Sensor.TYPE_GYROSCOPE, new MutableLiveData<>(0.1f)
@@ -34,9 +36,6 @@ public class Utils extends ViewModel  {
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat timer = new SimpleDateFormat("mm:ss");
 
-    public static final HashMap<Integer, SensorEvent> original_sensors = new HashMap<>();
-    public static final HashMap<Integer, SensorEvent> manipulated_sensors = new HashMap<>();
-
     public static MutableLiveData<Long> duration = new MutableLiveData<>(60000L);
     public static MutableLiveData<Long> interval = new MutableLiveData<>(250L);
 
@@ -44,9 +43,12 @@ public class Utils extends ViewModel  {
 
     public static void saveSensorValues(Activity activity, boolean patch) {
         for (int sensor : SENSORS) {
-            Recorder.recordValues(activity, Objects.requireNonNull(original_sensors.get(sensor)), "before");
-            if (patch)
-                Recorder.recordValues(activity, Objects.requireNonNull(manipulated_sensors.get(sensor)), "after");
+            SensorEvent event = Objects.requireNonNull(sensor_values.get(sensor));
+            Recorder.recordValues(activity, event, "before");
+            if (patch) {
+                Patch.manipulateValues(event);
+                Recorder.recordValues(activity, event, "after");
+            }
         }
     }
 }

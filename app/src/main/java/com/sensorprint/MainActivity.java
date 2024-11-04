@@ -30,10 +30,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 tab.setText(Utils.TAB_NAMES[position])
         ).attach();
 
-        for (int sensor : Utils.SENSORS) {
-            Utils.original_sensors.put(sensor, null);
-            Utils.manipulated_sensors.put(sensor, null);
-        }
+        for (int sensor : Utils.SENSORS)
+            Utils.sensor_values.put(sensor, null);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -57,9 +55,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Utils.original_sensors.replace(event.sensor.getType(), event);
-        Patch.manipulateValues(event);
-        Utils.manipulated_sensors.replace(event.sensor.getType(), event);
+        Utils.sensor_values.replace(event.sensor.getType(), event);
     }
 
     @Override
