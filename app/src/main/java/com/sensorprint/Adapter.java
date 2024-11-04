@@ -8,10 +8,19 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class Adapter extends FragmentStateAdapter {
-    private static final int ITEM_COUNT = 2;
+    public enum Pages {
+        MAIN("Home"),
+        SETTINGS("Settings");
 
-    private static final int MAIN = 0;
-    private static final int SETTINGS = 1;
+        private final String name;
+        Pages(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
     public Adapter(FragmentActivity activity) {
         super(activity);
@@ -20,7 +29,7 @@ public class Adapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch(position) {
+        switch(Pages.values()[position]) {
             case MAIN:
                 return new HomeFragment();
             case SETTINGS:
@@ -32,6 +41,6 @@ public class Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return ITEM_COUNT;
+        return Pages.values().length;
     }
 }

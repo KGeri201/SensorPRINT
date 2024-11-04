@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
 
         new CountDownTimer(Utils.duration.getValue(), Utils.interval.getValue()) {
             public void onTick(long millisUntilFinished) {
-                Utils.saveSensorValues((Activity) getContext(), patch.isChecked());
-                record.setText(Utils.timer.format(new Date(millisUntilFinished)));
+                Utils.writeCSV((Activity) getContext(), patch.isChecked());
+                record.setText(Utils.TIMER.format(new Date(millisUntilFinished)));
             }
 
             public void onFinish() {

@@ -27,11 +27,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewpager2.setAdapter(new Adapter(this));
 
         new TabLayoutMediator(tablayout, viewpager2, (tab, position) ->
-                tab.setText(Utils.TAB_NAMES[position])
+                tab.setText(Adapter.Pages.values()[position].getName())
         ).attach();
 
-        for (int sensor : Utils.SENSORS)
-            Utils.sensor_values.put(sensor, null);
+        for (int sensor : Utils.SENSORS) {
+            Utils.original_values.put(sensor, null);
+            Utils.patched_values.put(sensor, null);
+        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -55,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Utils.sensor_values.replace(event.sensor.getType(), event);
+        Utils.original_values.replace(event.sensor.getType(), new SensorValues(event));
+        Patch.manipulateValues(event);
+        Utils.patched_values.replace(event.sensor.getType(), new SensorValues(event));
+
     }
 
     @Override

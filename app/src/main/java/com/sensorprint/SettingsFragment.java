@@ -1,6 +1,5 @@
 package com.sensorprint;
 
-import android.hardware.Sensor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
     private EditText interval;
@@ -35,25 +32,32 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         interval = view.findViewById(R.id.interval_stg);
-        interval.setOnClickListener(v -> Utils.interval.setValue(Long.parseLong(interval.getText().toString())));
+        interval.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.INTERVAL));
 
         duration = view.findViewById(R.id.duration_stg);
-        duration.setOnClickListener(v -> Utils.duration.setValue(Long.parseLong(duration.getText().toString())));
+        duration.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.DURATION));
 
         lo_acc = view.findViewById(R.id.lo_acc_stg);
-        lo_acc.setOnClickListener(v -> Objects.requireNonNull(Utils.lambda_offsets.get(Sensor.TYPE_ACCELEROMETER)).setValue(Float.parseFloat(lo_acc.getText().toString())));
+        lo_acc.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.LO_ACC));
 
         lo_gyro = view.findViewById(R.id.lo_gyro_stg);
-        lo_gyro.setOnClickListener(v -> Objects.requireNonNull(Utils.lambda_offsets.get(Sensor.TYPE_GYROSCOPE)).setValue(Float.parseFloat(lo_gyro.getText().toString())));
+        lo_gyro.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.LO_GYRO));
 
         lg_acc = view.findViewById(R.id.lg_acc_stg);
-        lg_acc.setOnClickListener(v -> Objects.requireNonNull(Utils.lambda_offsets.get(Sensor.TYPE_ACCELEROMETER)).setValue(Float.parseFloat(lg_acc.getText().toString())));
+        lg_acc.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.LG_ACC));
 
         lg_gyro = view.findViewById(R.id.lg_gyro_stg);
-        lg_gyro.setOnClickListener(v -> Objects.requireNonNull(Utils.lambda_offsets.get(Sensor.TYPE_GYROSCOPE)).setValue(Float.parseFloat(lg_gyro.getText().toString())));
+        lg_gyro.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.LG_GYRO));
 
         save = view.findViewById(R.id.save_btn);
-//        save.setOnClickListener(v -> {});
+        save.setOnClickListener(v -> {
+            Utils.saveSettings(CostomTextWatcher.TextFields.INTERVAL, interval.getText());
+            Utils.saveSettings(CostomTextWatcher.TextFields.DURATION, duration.getText());
+            Utils.saveSettings(CostomTextWatcher.TextFields.LO_ACC, lo_acc.getText());
+            Utils.saveSettings(CostomTextWatcher.TextFields.LO_GYRO, lo_gyro.getText());
+            Utils.saveSettings(CostomTextWatcher.TextFields.LG_ACC, lg_acc.getText());
+            Utils.saveSettings(CostomTextWatcher.TextFields.LG_GYRO, lg_gyro.getText());
+        });
 
         Utils.recording_in_progress.observe(requireActivity(), item -> {
             interval.setEnabled(!item);

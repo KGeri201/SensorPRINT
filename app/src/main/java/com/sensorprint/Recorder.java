@@ -2,7 +2,6 @@ package com.sensorprint;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 
 import androidx.annotation.NonNull;
 
@@ -17,13 +16,13 @@ public class Recorder {
     private static final int AXIS_Y = 1;
     private static final int AXIS_Z = 2;
 
-    public static void recordValues(@NonNull final Context context, final SensorEvent event, final String path) {
+    public static void recordValues(@NonNull final Context context, final SensorValues event, final String path) {
         String name = "";
         String header = "t_unix";
         String content = "" + (System.currentTimeMillis()/1000);
 
         try {
-            switch(event.sensor.getType()) {
+            switch(event.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
                     name += "ACG";
                     header += ";x;y;z";
