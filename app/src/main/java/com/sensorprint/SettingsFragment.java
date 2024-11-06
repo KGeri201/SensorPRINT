@@ -23,7 +23,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
@@ -50,14 +49,7 @@ public class SettingsFragment extends Fragment {
         lg_gyro.addTextChangedListener(new CostomTextWatcher(CostomTextWatcher.TextFields.LG_GYRO));
 
         save = view.findViewById(R.id.save_btn);
-        save.setOnClickListener(v -> {
-            Utils.saveSettings(CostomTextWatcher.TextFields.INTERVAL, interval.getText());
-            Utils.saveSettings(CostomTextWatcher.TextFields.DURATION, duration.getText());
-            Utils.saveSettings(CostomTextWatcher.TextFields.LO_ACC, lo_acc.getText());
-            Utils.saveSettings(CostomTextWatcher.TextFields.LO_GYRO, lo_gyro.getText());
-            Utils.saveSettings(CostomTextWatcher.TextFields.LG_ACC, lg_acc.getText());
-            Utils.saveSettings(CostomTextWatcher.TextFields.LG_GYRO, lg_gyro.getText());
-        });
+        save.setOnClickListener(v -> saveSettings());
 
         Utils.recording_in_progress.observe(requireActivity(), item -> {
             interval.setEnabled(!item);
@@ -68,5 +60,16 @@ public class SettingsFragment extends Fragment {
             lg_gyro.setEnabled(!item);
             save.setEnabled(!item);
         });
+
+        saveSettings();
+    }
+
+    private void saveSettings() {
+        Utils.saveSettings(CostomTextWatcher.TextFields.INTERVAL, interval.getText().toString());
+        Utils.saveSettings(CostomTextWatcher.TextFields.DURATION, duration.getText().toString());
+        Utils.saveSettings(CostomTextWatcher.TextFields.LO_ACC, lo_acc.getText().toString());
+        Utils.saveSettings(CostomTextWatcher.TextFields.LO_GYRO, lo_gyro.getText().toString());
+        Utils.saveSettings(CostomTextWatcher.TextFields.LG_ACC, lg_acc.getText().toString());
+        Utils.saveSettings(CostomTextWatcher.TextFields.LG_GYRO, lg_gyro.getText().toString());
     }
 }

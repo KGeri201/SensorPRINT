@@ -20,12 +20,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/interval_stg" />
 
             <EditText
                 android:id="@+id/interval_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal"
@@ -40,12 +40,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/duration_stg" />
 
             <EditText
                 android:id="@+id/duration_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/text"
@@ -68,12 +68,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/lo_acc_stg" />
 
             <EditText
                 android:id="@+id/lo_acc_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/text"
@@ -88,12 +88,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/lo_gyro_stg" />
 
             <EditText
                 android:id="@+id/lo_gyro_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/text"
@@ -108,12 +108,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/lg_acc_stg" />
 
             <EditText
                 android:id="@+id/lg_acc_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/text"
@@ -128,12 +128,12 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="@color/black"
                 android:text="@string/lg_gyro_stg" />
 
             <EditText
                 android:id="@+id/lg_gyro_stg"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/text"

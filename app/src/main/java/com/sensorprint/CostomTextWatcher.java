@@ -31,6 +31,6 @@ public class CostomTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        Utils.saveSettings(field, s);
+        Utils.saveSettings(field, s.toString());
     }
 }

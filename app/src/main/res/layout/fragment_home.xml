@@ -20,7 +20,7 @@
 
     <CheckBox
         android:id="@+id/apply_chk"
-        android:layout_width="110dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -29,7 +29,8 @@
         android:text="@string/apply_chk"
         android:textAlignment="center"
         android:textColor="@color/text"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:checked="true"/>
 
     <TextView
         android:id="@+id/app_name"

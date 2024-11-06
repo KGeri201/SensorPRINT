@@ -32,7 +32,7 @@ public class Recorder {
                     break;
                 case Sensor.TYPE_GYROSCOPE:
                     name += "GYRO";
-                    header = ";x;y;z";
+                    header += ";x;y;z";
                     content += ";" + event.values[AXIS_X];
                     content += ";" + event.values[AXIS_Y];
                     content += ";" + event.values[AXIS_Z];

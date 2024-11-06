@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private Button record;
@@ -22,7 +23,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
         Recorder.clean(requireContext(), "before");
         Recorder.clean(requireContext(), "after");
 
-        new CountDownTimer(Utils.duration.getValue(), Utils.interval.getValue()) {
+        new CountDownTimer(Objects.requireNonNull(Utils.duration.getValue()), Objects.requireNonNull(Utils.interval.getValue())) {
             public void onTick(long millisUntilFinished) {
                 Utils.writeCSV((Activity) getContext(), patch.isChecked());
                 record.setText(Utils.TIMER.format(new Date(millisUntilFinished)));

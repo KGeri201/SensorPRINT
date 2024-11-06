@@ -1,12 +1,11 @@
 package com.sensorprint;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.Map;
 
 import android.hardware.SensorEvent;
 import android.hardware.Sensor;
-
-import androidx.lifecycle.MutableLiveData;
 
 /**
  * Class containing the noise generation to be applied to values of the Android
@@ -66,14 +65,34 @@ public class Patch {
     }
 
     /**
+     * Gets the lambda offset value for the specified sensor.
+     * If the key is not found returns 0.
+     * @param type sensor type as key.
+     * @return float +/- value offset.
+     */
+    private static float getOffset(int type) {
+        return Objects.requireNonNull(lambda_offsets.getOrDefault(type, 0.0f));
+    }
+
+    /**
+     * Gets the lambda gain value for the specified sensor.
+     * If the key is not found returns 0.
+     * @param type sensor type as key.
+     * @return float +/- value gain.
+     */
+    private static float getGain(int type) {
+        return Objects.requireNonNull(lambda_gains.getOrDefault(type, 0.0f));
+    }
+
+    /**
      * Selects offset and gain for the appropriate sensor and
      * applies noise to the value if the right sensor is read.
      * @param event SensorEvent.
      * @see SensorEvent
      */
     public static void manipulateValues(SensorEvent event) {
-        float offset = Utils.lambda_offsets.getOrDefault(event.sensor.getType(), new MutableLiveData<>(0.0f)).getValue();
-        float gain = Utils.lambda_gains.getOrDefault(event.sensor.getType(), new MutableLiveData<>(0.0f)).getValue();
+        float offset = Utils.getOffset(event.sensor.getType());
+        float gain = Utils.getGain(event.sensor.getType());
 
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
