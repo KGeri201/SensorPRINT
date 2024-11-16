@@ -22,12 +22,12 @@ public class Utils extends ViewModel  {
     @SuppressLint("SimpleDateFormat")
     public static final SimpleDateFormat TIMER = new SimpleDateFormat("mm:ss");
 
-    public MutableLiveData<Boolean> recording_in_progress = new MutableLiveData<>(false);
+    public final MutableLiveData<Boolean> recording_in_progress = new MutableLiveData<>(false);
 
-    public MutableLiveData<Long> interval = new MutableLiveData<>();
-    public MutableLiveData<Long> duration = new MutableLiveData<>();
+    private static final HashMap<AdaptedPatch, HashMap<Integer, SensorValues>> values = new HashMap<>();
 
-    public HashMap<AdaptedPatch, HashMap<Integer, SensorValues>> values = new HashMap<>();
+    private final MutableLiveData<Long> interval = new MutableLiveData<>();
+    private final MutableLiveData<Long> duration = new MutableLiveData<>();
 
     public void writeCSVs(final Activity activity) {
         values.forEach((key, value) -> {
@@ -61,5 +61,12 @@ public class Utils extends ViewModel  {
             key.manipulateValues(event);
             value.put(event.sensor.getType(), new SensorValues(event));
         });
+    }
+
+    public static void addNewPatch(@NonNull final AdaptedPatch patch) {
+        values.put(patch, new HashMap<Integer, SensorValues>() {{
+            for (int sensor : SENSORS)
+                put(sensor, null);
+        }});
     }
 }

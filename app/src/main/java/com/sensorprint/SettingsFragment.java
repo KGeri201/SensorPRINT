@@ -35,6 +35,8 @@ public class SettingsFragment extends Fragment {
         this.values = values;
         this.patch = new AdaptedPatch();
 
+        Utils.addNewPatch(this.patch);
+
         if (values != null) {
             this.patch.setFilename(values.filename);
             this.patch.setOffset(Sensor.TYPE_ACCELEROMETER, values.lo_acc);
