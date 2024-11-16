@@ -1,36 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/home"
     tools:context=".HomeFragment">
-
-    <Button
-        android:id="@+id/record_btn"
-        android:layout_width="140dp"
-        android:layout_height="65dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/apply_chk"
-        android:text="@string/record_btn"
-        android:textAlignment="center"
-        android:textColor="@color/text"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <CheckBox
-        android:id="@+id/apply_chk"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:buttonTint="@color/white"
-        android:text="@string/apply_chk"
-        android:textAlignment="center"
-        android:textColor="@color/text"
-        android:textStyle="bold|italic"
-        android:checked="true"/>
 
     <TextView
         android:id="@+id/app_name"
@@ -46,12 +21,77 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="150dp" />
 
-<!--    <Button-->
-<!--        android:id="@+id/switch_to_settings"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_width="150dp"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginEnd="-75dp"/>-->
+    <TableLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/interval_stg" />
+
+            <EditText
+                android:id="@+id/interval_stg"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:text="@string/interval_stg_def"
+                android:textColor="@color/text" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/duration_stg" />
+
+            <EditText
+                android:id="@+id/duration_stg"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textColor="@color/text"
+                android:text="@string/duration_stg_def"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/record_btn"
+        android:layout_width="140dp"
+        android:layout_height="65dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/add_patch_btn"
+        android:text="@string/record_btn"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/add_patch_btn"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:text="@string/add_patch_btn"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+<!--        android:backgroundTint="@color/add_btn"/>-->
 
 </RelativeLayout>

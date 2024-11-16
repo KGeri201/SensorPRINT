@@ -7,7 +7,8 @@
 
     <color name="home">#FF808080</color>
     <color name="settings">#FF808080</color>
-    <color name="record">#FFFF0000</color>
+    <color name="record_btn">#FFFF0000</color>
+    <color name="add_btn">#FF663399</color>
     <color name="text">#FFFFFFFF</color>
     <color name="tab_layout">#FF000000</color>
 </resources>

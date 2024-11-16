@@ -6,7 +6,9 @@
     <string name="settings_tab">Settings</string>
     <string name="save_btn">Save</string>tab_description
     <string name="tab_dsc">Navigation Bar</string>
+    <string name="add_patch_btn">add</string>
 
+    <string name="filename_stg">Folder</string>
     <string name="interval_stg">Interval</string>
     <string name="duration_stg">Duration</string>
     <string name="lo_acc_stg">Lambda Offset ACC</string>
@@ -14,6 +16,7 @@
     <string name="lg_acc_stg">Lambda Gain ACC</string>
     <string name="lg_gyro_stg">Lambda Gain GYRO</string>
 
+    <string name="filename_stg_def">after</string>
     <string name="interval_stg_def">250</string>
     <string name="duration_stg_def">60000</string>
     <string name="lo_acc_stg_def">0.5</string>

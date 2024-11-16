@@ -8,36 +8,39 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private SensorManager sensorManager;
+    private static SensorManager sensorManager;
+
+    private PagerAdapter pagerAdapter;
+    private Utils viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewModel = new ViewModelProvider(this).get(Utils.class);
+
         TabLayout tablayout = findViewById(R.id.tab_layout);
         ViewPager2 viewpager2 = findViewById(R.id.pager);
-        viewpager2.setAdapter(new Adapter(this));
+        pagerAdapter = new PagerAdapter(this);
+        viewpager2.setAdapter(pagerAdapter);
 
         new TabLayoutMediator(tablayout, viewpager2, (tab, position) ->
-                tab.setText(Adapter.Pages.values()[position].getName())
+                tab.setText(pagerAdapter.getName(position))
         ).attach();
-
-        for (int sensor : Utils.SENSORS) {
-            Utils.original_values.put(sensor, null);
-            Utils.patched_values.put(sensor, null);
-        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        Permit.getPermissions(this);
+//        Permit.getPermissions(this);
+
+        AutoRecord.getInstance().setAdapter(pagerAdapter);
     }
 
     @Override
@@ -57,14 +60,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Utils.original_values.replace(event.sensor.getType(), new SensorValues(event));
-        Patch.manipulateValues(event);
-        Utils.patched_values.replace(event.sensor.getType(), new SensorValues(event));
-
+        viewModel.saveValues(event);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public void addNewTab() {
+        pagerAdapter.addFragment(new SettingsFragment("Patch " + pagerAdapter.getItemCount(), null));
     }
 }
