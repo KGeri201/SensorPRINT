@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         viewpager2.setAdapter(pagerAdapter);
 
         new TabLayoutMediator(tablayout, viewpager2, (tab, position) ->
-                tab.setText(pagerAdapter.getName(position))
+                tab.setText(pagerAdapter.getFragment(position).toString())
         ).attach();
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);

@@ -14,12 +14,6 @@ public class AdaptedPatch extends Patch {
             lambda_offsets.put(sensor, 0.0F);
             lambda_gains.put(sensor, 0.0F);
         }
-
-        Utils.values.put(this, new HashMap<Integer, SensorValues>() {{
-            for (int sensor : Utils.SENSORS) {
-                put(sensor, null);
-            }
-        }});
     }
 
     public void setOffset(final int type, String s) {

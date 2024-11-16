@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.HashMap;
+
 public class SettingsFragment extends Fragment {
     private final String name;
     private final AutoRecord.TestObject values;
@@ -32,6 +34,8 @@ public class SettingsFragment extends Fragment {
         this.name = name;
         this.values = values;
         this.patch = new AdaptedPatch();
+
+        Utils.initArray(this.patch);
 
         if (values != null) {
             this.patch.setFilename(values.filename);

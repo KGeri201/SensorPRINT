@@ -62,4 +62,12 @@ public class Utils extends ViewModel  {
             value.put(event.sensor.getType(), new SensorValues(event));
         });
     }
+
+    public static void initArray(@NonNull final AdaptedPatch patch) {
+        values.put(patch, new HashMap<Integer, SensorValues>() {{
+            for (int sensor : SENSORS) {
+                put(sensor, null);
+            }
+        }});
+    }
 }

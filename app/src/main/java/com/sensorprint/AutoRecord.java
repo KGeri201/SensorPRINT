@@ -36,11 +36,11 @@ public class AutoRecord {
             new TestObject("after_lb", "0.25", "0.05", "0.25", "0.25")
     };
 
+    private boolean used = false;
+
     private PagerAdapter adapter;
 
-    private AutoRecord() {
-
-    }
+    private AutoRecord() { }
 
     public static AutoRecord getInstance() {
         if(INSTANCE == null) {
@@ -55,7 +55,17 @@ public class AutoRecord {
     }
 
     public void setup() {
+        if (used)
+            return;
+
         for (TestObject values : objects)
             adapter.addFragment(new SettingsFragment("Patch " + adapter.getItemCount(), values));
+
+        used = true;
+    }
+
+    public void run() {
+        setup();
+        ((HomeFragment) adapter.getFragment(0)).onTimerStart();
     }
 }

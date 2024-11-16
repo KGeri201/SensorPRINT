@@ -23,8 +23,8 @@ public class PagerAdapter extends FragmentStateAdapter {
         notifyItemInserted(fragments.size() - 1);
     }
 
-    public String getName(final int position) {
-        return fragments.get(position).toString();
+    public Fragment getFragment(final int position) {
+        return fragments.get(position);
     }
 
     @NonNull
