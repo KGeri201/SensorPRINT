@@ -1,19 +1,34 @@
 package com.sensorprint;
 
-import java.util.HashMap;
-import java.util.Map;
+import android.hardware.Sensor;
+import androidx.annotation.NonNull;
 
 public class AdaptedPatch extends Patch {
     private String filename;
-
-    private Map<Integer, Float> lambda_offsets = new HashMap<>();
-    private Map<Integer, Float> lambda_gains = new HashMap<>();
 
     public AdaptedPatch() {
         for (int sensor : Utils.SENSORS) {
             lambda_offsets.put(sensor, 0.0F);
             lambda_gains.put(sensor, 0.0F);
         }
+    }
+
+    public SensorValues manipulateValues(@NonNull SensorValues event) {
+        final float offset = super.getOffset(event.getType());
+        final float gain = super.getGain(event.getType());
+
+        switch (event.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+            case Sensor.TYPE_GYROSCOPE:
+                event.values[AXIS_X] = super.applyNoise(event.values[AXIS_X], offset, gain);
+                event.values[AXIS_Y] = super.applyNoise(event.values[AXIS_Y], offset, gain);
+                event.values[AXIS_Z] = super.applyNoise(event.values[AXIS_Z], offset, gain);
+                break;
+            default:
+                break;
+        }
+
+        return event;
     }
 
     public void setOffset(final int type, String s) {

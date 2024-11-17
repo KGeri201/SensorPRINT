@@ -58,8 +58,7 @@ public class Utils extends ViewModel  {
 
     public void saveValues(@NonNull SensorEvent event) {
         values.forEach((key, value) -> {
-            key.manipulateValues(event);
-            value.put(event.sensor.getType(), new SensorValues(event));
+            value.put(event.sensor.getType(), key.manipulateValues(new SensorValues(event)));
         });
     }
 
