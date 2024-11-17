@@ -57,9 +57,7 @@ public class Utils extends ViewModel  {
     }
 
     public void saveValues(@NonNull SensorEvent event) {
-        values.forEach((key, value) -> {
-            value.put(event.sensor.getType(), key.manipulateValues(new SensorValues(event)));
-        });
+        values.forEach((key, value) -> value.put(event.sensor.getType(), key.manipulateValues(new SensorValues(event))));
     }
 
     public static void addNewPatch(@NonNull final AdaptedPatch patch) {

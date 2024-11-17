@@ -22,7 +22,7 @@ public class Recorder {
         String content = "" + (System.currentTimeMillis()/1000);
 
         try {
-            switch(event.getType()) {
+            switch(event.sensor.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
                     name += "ACG";
                     header += ";x;y;z";

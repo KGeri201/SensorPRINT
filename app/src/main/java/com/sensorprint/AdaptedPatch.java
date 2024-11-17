@@ -14,10 +14,10 @@ public class AdaptedPatch extends Patch {
     }
 
     public SensorValues manipulateValues(@NonNull SensorValues event) {
-        final float offset = super.getOffset(event.getType());
-        final float gain = super.getGain(event.getType());
+        final float offset = super.getOffset(event.sensor.getType());
+        final float gain = super.getGain(event.sensor.getType());
 
-        switch (event.getType()) {
+        switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
             case Sensor.TYPE_GYROSCOPE:
                 event.values[AXIS_X] = super.applyNoise(event.values[AXIS_X], offset, gain);
