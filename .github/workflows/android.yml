@@ -24,24 +24,24 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - name: Setup build tool version variable
-      id: get_sdk_version
-      shell: bash
-      run: echo "::set-output name=BUILD_TOOL_VERSION::$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)"
-    - name: Sign app APK
-      id: sign_app
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/outputs/apk/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY_STORE }}
-        alias: ${{ secrets.SIGNING_KEY_ALIAS }}
-        keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-      env:
-        BUILD_TOOLS_VERSION: ${{ steps.get_sdk_version.outputs.BUILD_TOOL_VERSION }}
+    # - name: Setup build tool version variable
+    #   id: get_sdk_version
+    #   shell: bash
+    #   run: echo "::set-output name=BUILD_TOOL_VERSION::$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)"
+    # - name: Sign app APK
+    #   id: sign_app
+    #   uses: r0adkll/sign-android-release@v1
+    #   with:
+    #     releaseDirectory: app/build/outputs/apk/release
+    #     signingKeyBase64: ${{ secrets.SIGNING_KEY_STORE }}
+    #     alias: ${{ secrets.SIGNING_KEY_ALIAS }}
+    #     keyStorePassword: ${{ secrets.SIGNING_STORE_PASSWORD }}
+    #     keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+    #   env:
+    #     BUILD_TOOLS_VERSION: ${{ steps.get_sdk_version.outputs.BUILD_TOOL_VERSION }}
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.4.3
-      with:
-        # name: Build
-        path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+    # - name: Upload a Build Artifact
+    #   uses: actions/upload-artifact@v4.4.3
+    #   with:
+    #     # name: Build
+    #     path: ${{ steps.sign_app.outputs.signedReleaseFile }}
