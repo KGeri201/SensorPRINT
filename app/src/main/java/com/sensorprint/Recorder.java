@@ -1,22 +1,38 @@
 package com.sensorprint;
 
-import android.content.Context;
 import android.hardware.Sensor;
 
 import androidx.annotation.NonNull;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class Recorder {
-    private static final int AXIS_X = 0;
-    private static final int AXIS_Y = 1;
-    private static final int AXIS_Z = 2;
+    final int AXIS_X = 0;
+    final int AXIS_Y = 1;
+    final int AXIS_Z = 2;
 
-    public static void record(@NonNull final Context context, final SensorValues event, final String path) {
+    private static Recorder INSTANCE;
+
+    private Recorder() { }
+
+    public static Recorder getInstance() {
+        if(INSTANCE == null) INSTANCE = new Recorder();
+
+        return INSTANCE;
+    }
+
+    public void record(final SensorValues event, final String path) {
         String name = "";
         String header = "t_unix";
         String content = "" + (System.currentTimeMillis()/1000);
@@ -40,7 +56,7 @@ public class Recorder {
                 default: return;
             }
 
-            File file = new File(context.getExternalFilesDir(null), path+File.separator+name +".csv");
+            File file = new File(path, name + ".csv");
 
             if (!file.exists()) {
                 if (!path.isEmpty())
@@ -56,11 +72,11 @@ public class Recorder {
         }
     }
 
-    public static void clean(@NonNull final Context context, final String path) {
-        deleteRecursive(new File(context.getExternalFilesDir(null), path));
+    public void clean(@NonNull final File dir) {
+        deleteRecursive(dir);
     }
 
-    private static void deleteRecursive(@NonNull final File fileOrDirectory) {
+    private void deleteRecursive(@NonNull final File fileOrDirectory) {
         if (fileOrDirectory.isDirectory())
             for (File child : Objects.requireNonNull(fileOrDirectory.listFiles()))
                 deleteRecursive(child);
@@ -68,10 +84,46 @@ public class Recorder {
         fileOrDirectory.delete();
     }
 
-    private static void write(@NonNull final File file, final String content) throws IOException {
+    private void write(@NonNull final File file, final String content) throws IOException {
         FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(content + "\n");
         bw.close();
+    }
+
+    private List<String> getFiles(File dir) throws IOException {
+        List<String> filesListInDir = new ArrayList<>();
+
+        File[] files = dir.listFiles();
+        assert files != null;
+        for(File file : files){
+            if(file.isFile()) filesListInDir.add(file.getAbsolutePath());
+            else filesListInDir.addAll(getFiles(file));
+        }
+
+        return filesListInDir;
+    }
+
+    public void zipFiles(File fileOrDirectory, String zipDirName) {
+        try {
+            List<String> filesListInDir = getFiles(fileOrDirectory);
+            FileOutputStream fos = new FileOutputStream(zipDirName);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            for(String filePath : filesListInDir){
+                zos.putNextEntry(new ZipEntry(filePath.substring(fileOrDirectory.getAbsolutePath().length()+1)));
+                FileInputStream fis = new FileInputStream(filePath);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

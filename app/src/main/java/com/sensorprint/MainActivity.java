@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-//        Permit.getPermissions(this);
+        Permit.getInstance().getPermissions(this);
 
         AutoRecord.getInstance().setAdapter(pagerAdapter);
     }

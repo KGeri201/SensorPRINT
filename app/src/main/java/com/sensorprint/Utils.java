@@ -2,8 +2,7 @@ package com.sensorprint;
 
 import android.annotation.SuppressLint;
 
-import android.app.Activity;
-
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 
@@ -11,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 import java.util.HashMap;
@@ -24,20 +24,24 @@ public class Utils extends ViewModel  {
 
     public final MutableLiveData<Boolean> recording_in_progress = new MutableLiveData<>(false);
 
+    private static final Recorder recorder = Recorder.getInstance();
+
     private static final HashMap<AdaptedPatch, HashMap<Integer, SensorValues>> values = new HashMap<>();
 
     private final MutableLiveData<Long> interval = new MutableLiveData<>();
     private final MutableLiveData<Long> duration = new MutableLiveData<>();
 
-    public void writeCSVs(final Activity activity) {
+    private final String ZIPFOLDER = "device_name.zip";
+
+    public void writeCSVs(@NonNull final Context context) {
         values.forEach((key, value) -> {
             for (int sensor : SENSORS)
-                Recorder.record(activity, Objects.requireNonNull(value.get(sensor)), key.getFilename());
+                recorder.record(Objects.requireNonNull(value.get(sensor)), context.getExternalFilesDir(null) + File.separator + key.getFilename());
         });
     }
 
-    public void cleanCSVs(final Activity activity) {
-        values.forEach((key, value) -> Recorder.clean(activity, key.getFilename()));
+    public void cleanCSVs(@NonNull final Context context) {
+        values.forEach((key, value) -> recorder.clean(new File(context.getExternalFilesDir(null), key.getFilename())));
     }
 
     public void setInterval(final String s) {
@@ -65,5 +69,9 @@ public class Utils extends ViewModel  {
             for (int sensor : SENSORS)
                 put(sensor, null);
         }});
+    }
+
+    public void zipFiles(@NonNull final Context context) {
+        recorder.zipFiles(context.getExternalFilesDir(null), context.getExternalFilesDir(null).getAbsolutePath() + File.separator + ZIPFOLDER);
     }
 }

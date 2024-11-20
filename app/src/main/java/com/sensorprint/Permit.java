@@ -9,18 +9,33 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class Permit {
-    private static final int STORAGE_PERMISSION_CODE = 23;
+    private static Permit INSTANCE;
 
-    public static void getPermissions(Context context) {
-        if(!checkPermissions(context))
-            requestForStoragePermissions((Activity) context);
+    private final int STORAGE_PERMISSION_CODE = 23;
+
+    private Context context = null;
+
+    private Permit() { }
+
+    public static Permit getInstance() {
+        if(INSTANCE == null) INSTANCE = new Permit();
+
+        return INSTANCE;
     }
 
-    private static boolean checkPermissions(Context context){
+    public void getPermissions(@NonNull final Context context) {
+        this.context = context;
+
+        if(!checkPermissions())
+            requestForStoragePermissions();
+    }
+
+    private boolean checkPermissions(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             return Environment.isExternalStorageManager();
         }else {
@@ -33,10 +48,10 @@ public class Permit {
         }
     }
 
-    private static void requestForStoragePermissions(Activity activity) {
+    private void requestForStoragePermissions() {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             ActivityCompat.requestPermissions(
-                    activity,
+                    (Activity) context,
                     new String[]{
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE

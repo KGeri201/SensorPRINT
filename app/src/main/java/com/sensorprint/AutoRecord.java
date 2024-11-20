@@ -43,9 +43,7 @@ public class AutoRecord {
     private AutoRecord() { }
 
     public static AutoRecord getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new AutoRecord();
-        }
+        if(INSTANCE == null) INSTANCE = new AutoRecord();
 
         return INSTANCE;
     }

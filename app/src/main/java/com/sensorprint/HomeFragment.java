@@ -1,6 +1,5 @@
 package com.sensorprint;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -98,15 +97,16 @@ public class HomeFragment extends Fragment {
     public void onTimerStart() {
         viewModel.recording_in_progress.setValue(true);
 
-        viewModel.cleanCSVs((Activity) getContext());
+        viewModel.cleanCSVs(requireContext());
 
         new CountDownTimer(viewModel.getDuration(), viewModel.getInterval()) {
             public void onTick(long millisUntilFinished) {
-                viewModel.writeCSVs((Activity) getContext());
+                viewModel.writeCSVs(requireContext());
                 record.setText(Utils.TIMER.format(new Date(millisUntilFinished)));
             }
 
             public void onFinish() {
+                viewModel.zipFiles(requireContext());
                 viewModel.recording_in_progress.setValue(false);
                 record.setText(getString(R.string.record_btn));
             }
