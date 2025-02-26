@@ -85,7 +85,7 @@
 
     <CheckBox
         android:id="@+id/apply_patch_chk"
-        android:layout_width="135dp"
+        android:layout_width="150dp"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
