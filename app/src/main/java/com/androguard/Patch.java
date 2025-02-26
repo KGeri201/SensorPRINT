@@ -1,52 +1,68 @@
 package com.androguard;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.Map;
 
 import android.hardware.SensorEvent;
 import android.hardware.Sensor;
+import android.os.Environment;
 
 import androidx.annotation.NonNull;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Class containing the noise generation to be applied to values of the Android
  * Sensor class in order to obscure the builtin error
  * @author  Gergö Kranz
  * @version 1.0
- * @since   17-11-2024
+ * @since
  */
 public class Patch {
-    static final int AXIS_X = 0;
-    static final int AXIS_Y = 1;
-    static final int AXIS_Z = 2;
+    public static final int AXIS_X = 0;
+    public static final int AXIS_Y = 1;
+    public static final int AXIS_Z = 2;
+    public static final File config = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "androguard.json");
+
+    private static final HashMap<Integer, float[]> previous_values = new HashMap<>();
 
     /**
      * ...
      */
-    final Map<Integer, float[]> errors = new HashMap<Integer, float[]>() {{
-        put(Sensor.TYPE_ACCELEROMETER, new float[]{0.0f, 0.0f, 0.0f});
-        put(Sensor.TYPE_GYROSCOPE, new float[]{0.0f, 0.0f, 0.0f});
-    }};
+    private static JSONObject corrections;
 
     /**
-     * Applies noise to the original sensor value.
-     * @param original Original sensor value.
-     * @param error ...
-     * @return float corrected sensor value.
+     * ...
      */
-    float applyCorrection(final float original, final float error) {
-        return original - error;
+    static {
+        try {
+            String jsonData = new String(Files.readAllBytes(config.toPath()));
+            corrections = new JSONObject(jsonData);
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Gets the lambda offset value for the specified sensor.
      * If the key is not found returns 0.
+     *
      * @param type sensor type as key.
      * @return ...
      */
-    float[] getError(final int type) {
-        return Objects.requireNonNull(errors.getOrDefault(type, new float[]{0.0f, 0.0f, 0.0f}));
+    private JSONArray getCorrection(final int type) throws JSONException {
+        if(corrections.has(String.valueOf(type)))
+            return corrections.getJSONArray(String.valueOf(type));
+
+        return new JSONArray() {{
+            put(0.0f);
+            put(0.0f);
+            put(0.0f);
+        }};
     }
 
     /**
@@ -56,18 +72,30 @@ public class Patch {
      * @return SensorEvent the modified event.
      * @see SensorEvent
      */
-    public SensorEvent manipulateValues(@NonNull SensorEvent event) {
-        final float[] error = getError(event.sensor.getType());
+    public SensorEvent manipulateValues(@NonNull SensorEvent event)  {
+        try {
+            final int type = event.sensor.getType();
 
-        switch (event.sensor.getType()) {
-            case Sensor.TYPE_ACCELEROMETER:
-            case Sensor.TYPE_GYROSCOPE:
-                event.values[AXIS_X] = applyCorrection(event.values[AXIS_X], error[AXIS_X]);    // X
-                event.values[AXIS_Y] = applyCorrection(event.values[AXIS_Y], error[AXIS_Y]);    // Y
-                event.values[AXIS_Z] = applyCorrection(event.values[AXIS_Z], error[AXIS_Z]);    // Z
-                break;
-            default:
-                break;
+            final JSONArray correction = getCorrection(type);
+
+            switch (type) {
+                case Sensor.TYPE_ACCELEROMETER:
+                    event.values[AXIS_Z] = event.values[AXIS_Z] - (float) correction.getDouble(AXIS_Z);
+                    event.values[AXIS_Y] = event.values[AXIS_Y] - (float) correction.getDouble(AXIS_Y);
+                    event.values[AXIS_X] = event.values[AXIS_X] - (float) correction.getDouble(AXIS_X);
+                case Sensor.TYPE_GYROSCOPE:
+                    final float alpha = (float) corrections.getDouble("alpha");
+                    event.values[AXIS_Z] = alpha * event.values[AXIS_Z] - (float) correction.getDouble(AXIS_Z) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_Z];
+                    event.values[AXIS_Y] = alpha * event.values[AXIS_Y] - (float) correction.getDouble(AXIS_Y) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_Y];
+                    event.values[AXIS_X] = alpha * event.values[AXIS_X] - (float) correction.getDouble(AXIS_X) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_X];
+                    break;
+                default:
+                    break;
+            }
+
+            previous_values.put(type, event.values.clone());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
 
         return event;

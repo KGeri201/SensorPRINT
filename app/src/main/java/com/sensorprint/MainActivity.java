@@ -1,46 +1,43 @@
 package com.sensorprint;
 
+import com.androguard.PatchCalibration;
+
 import android.os.Bundle;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static SensorManager sensorManager;
-
-    private PagerAdapter pagerAdapter;
-    private Utils viewModel;
+    private EditText interval;
+    private EditText duration;
+    private Button record;
+    private CheckBox apply_patch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this).get(Utils.class);
+        PatchCalibration.run(this);
 
-        TabLayout tablayout = findViewById(R.id.tab_layout);
-        ViewPager2 viewpager2 = findViewById(R.id.pager);
-        pagerAdapter = new PagerAdapter(this);
-        viewpager2.setAdapter(pagerAdapter);
-
-        new TabLayoutMediator(tablayout, viewpager2, (tab, position) ->
-                tab.setText(pagerAdapter.getFragment(position).toString())
-        ).attach();
+        SetupFragment();
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        Permit.getInstance().getPermissions(this);
-
-        AutoRecord.getInstance().setAdapter(pagerAdapter);
+        Utils.setFilesDir(getExternalFilesDir(null));
     }
 
     @Override
@@ -58,17 +55,79 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.unregisterListener(this);
     }
 
+    private void SetupFragment() {
+        interval = findViewById(R.id.interval_stg);
+        interval.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) { saveSettings(); }
+        });
+
+        duration = findViewById(R.id.duration_stg);
+        duration.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) { saveSettings(); }
+        });
+
+        record = findViewById(R.id.record_btn);
+        record.setOnClickListener(v -> onTimerStart());
+
+        apply_patch = findViewById(R.id.apply_patch_chk);
+        apply_patch.setOnClickListener(v -> saveSettings());
+
+        saveSettings();
+    }
+
+    private void saveSettings() {
+        Utils.setInterval(interval.getText().toString());
+        Utils.setDuration(duration.getText().toString());
+        Utils.setPatchApplication(apply_patch.isChecked());
+    }
+
+    private void enableFields(boolean state) {
+        interval.setEnabled(state);
+        duration.setEnabled(state);
+        record.setEnabled(state);
+        apply_patch.setEnabled(state);
+    }
+
+    public void onTimerStart() {
+        enableFields(false);
+
+        Utils.cleanCSVs();
+
+        new CountDownTimer(Utils.getDuration(), Utils.getInterval()) {
+            public void onTick(long millisUntilFinished) {
+                Utils.writeCSVs();
+                record.setText(Utils.TIMER.format(new Date(millisUntilFinished)));
+            }
+
+            public void onFinish() {
+                Utils.zipFiles();
+                record.setText(getString(R.string.record_btn));
+                enableFields(true);
+            }
+        }.start();
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
-        viewModel.saveValues(event);
+        Utils.saveValues(event);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    public void addNewTab() {
-        pagerAdapter.addFragment(new SettingsFragment("Patch " + pagerAdapter.getItemCount(), null));
     }
 }

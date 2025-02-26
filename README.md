@@ -2,7 +2,8 @@
 
 ## Description
 It is a small app to record sensor values of the built-in accelerometer and gyroscope in android devices.  
-This project was made to complement my bachelors thesis [AndroGUARD](https://github.com/KGeri201/AndroGUARD).  
+This project was made to complement my bachelors thesis [AndroGUARD](https://github.com/KGeri201/AndroGUARD).
+From version 4.0 it uses the more recent, new [AndroGUARD-2](https://github.com/KGeri201/AndroGUARD-2).
 It does record the original unchanged values from the sensors and also modified ones, where the patch got applied to.  
 This way the values before and after the patch can be compared more easily.  
 
