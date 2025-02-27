@@ -116,7 +116,7 @@ public class PatchCalibration implements SensorEventListener  {
         for(int sensor : values.keySet())
             corrections.put(String.valueOf(sensor), new JSONArray(computeCorrections(sensor)));
 
-        corrections.put("alpha", 0.9f);
+//        corrections.put("alpha", 0.9f);
 
         FileWriter file = new FileWriter(Patch.config);
         file.write(corrections.toString());
@@ -140,12 +140,19 @@ public class PatchCalibration implements SensorEventListener  {
             case Sensor.TYPE_GYROSCOPE:
                 return computeMean(Objects.requireNonNull(values.get(sensor)));
             case Sensor.TYPE_ACCELEROMETER:
-                float[] accelMean = computeMean(Objects.requireNonNull(values.get(sensor)));
-                double accelMagnitude = Math.sqrt(accelMean[0] * accelMean[0] +
-                        accelMean[1] * accelMean[1] +
-                        accelMean[2] * accelMean[2]);
-                float scaleFactor = (float) (9.81 / accelMagnitude);
-                return new float[]{accelMean[0] * (1 - scaleFactor), accelMean[1] * (1 - scaleFactor), accelMean[2] * (1 - scaleFactor)};
+//                float[] accelMean = computeMean(Objects.requireNonNull(values.get(sensor)));
+//                double accelMagnitude = Math.sqrt(accelMean[0] * accelMean[0] +
+//                        accelMean[1] * accelMean[1] +
+//                        accelMean[2] * accelMean[2]);
+//                float scaleFactor = (float) (9.81 / accelMagnitude);
+//                return new float[]{accelMean[0] * (1 - scaleFactor), accelMean[1] * (1 - scaleFactor), accelMean[2] * (1 - scaleFactor)};
+                float[] mean = computeMean(Objects.requireNonNull(values.get(sensor)));
+                int gravity_axis = 0;
+                for (int i = 1; i < mean.length; ++i)
+                    if (mean[i] > mean[gravity_axis]) gravity_axis = i;
+
+                mean[gravity_axis] -= 9.81f;
+                return mean;
         }
 
         return new float[]{0f, 0f, 0f};

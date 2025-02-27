@@ -100,9 +100,9 @@ public class Utils  {
                 case Sensor.TYPE_ACCELEROMETER:
                     name += "ACG";
                     header += ";x;y;z";
-                    content += ";" +values[Patch.AXIS_X];
-                    content += ";" +values[Patch.AXIS_Y];
-                    content += ";" +values[Patch.AXIS_Z];
+                    content += ";" + values[Patch.AXIS_X];
+                    content += ";" + values[Patch.AXIS_Y];
+                    content += ";" + values[Patch.AXIS_Z];
                     break;
                 case Sensor.TYPE_GYROSCOPE:
                     name += "GYRO";
