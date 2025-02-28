@@ -80,15 +80,7 @@ public class Patch {
 
             switch (type) {
                 case Sensor.TYPE_ACCELEROMETER:
-                    event.values[AXIS_Z] -= (float) correction.getDouble(AXIS_Z);
-                    event.values[AXIS_Y] -= (float) correction.getDouble(AXIS_Y);
-                    event.values[AXIS_X] -= (float) correction.getDouble(AXIS_X);
-                    break;
                 case Sensor.TYPE_GYROSCOPE:
-//                    final float alpha = (float) corrections.getDouble("alpha");
-//                    event.values[AXIS_Z] = alpha * event.values[AXIS_Z] - (float) correction.getDouble(AXIS_Z) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_Z];
-//                    event.values[AXIS_Y] = alpha * event.values[AXIS_Y] - (float) correction.getDouble(AXIS_Y) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_Y];
-//                    event.values[AXIS_X] = alpha * event.values[AXIS_X] - (float) correction.getDouble(AXIS_X) + (1 - alpha) * previous_values.getOrDefault(type, new float[]{0f, 0f, 0f})[AXIS_X];
                     event.values[AXIS_Z] -= (float) correction.getDouble(AXIS_Z);
                     event.values[AXIS_Y] -= (float) correction.getDouble(AXIS_Y);
                     event.values[AXIS_X] -= (float) correction.getDouble(AXIS_X);
