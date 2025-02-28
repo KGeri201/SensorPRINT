@@ -28,7 +28,6 @@ public class PatchCalibration implements SensorEventListener  {
     private static final HashMap<Integer, List<float[]>> values = new HashMap<>();
     private static final PatchCalibration INSTANCE = new PatchCalibration();
     private static SensorManager sensorManager;
-    private Activity activity;
 
     private PatchCalibration() { }
 
@@ -39,35 +38,29 @@ public class PatchCalibration implements SensorEventListener  {
     public static void run(Activity activity) {
         if(Patch.config.exists()) return;
 
-        final PatchCalibration instance = getInstance();
-        instance.setActivity(activity);
-        instance.showDialog();
+        getInstance().showDialog(activity);
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
-    public void showDialog() {
+    public void showDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.dialog_title);
         builder.setMessage(R.string.androguard_msg);
         builder.setCancelable(true);
-        builder.setPositiveButton("Start", (dialog, which) -> approve());
+        builder.setPositiveButton("Start", (dialog, which) -> approve(activity));
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
-    private void approve() {
+    private void approve(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.dialog_title);
         builder.setMessage(R.string.start_calibration);
         builder.setCancelable(true);
-        builder.setPositiveButton("Continue", (dialog, which) -> gatherValues());
+        builder.setPositiveButton("Continue", (dialog, which) -> gatherValues(activity));
         builder.show();
     }
 
-    private void gatherValues() {
+    private void gatherValues(Activity activity) {
         final int interval = 10000;
         final String[] progress = {".", "..", "..."};
 
@@ -96,14 +89,15 @@ public class PatchCalibration implements SensorEventListener  {
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
-                restart();
+                restart(activity);
             }
         }.start();
     }
 
-    private void restart() {
+    private void restart(Activity activity) {
         PackageManager packageManager = activity.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(activity.getPackageName());
+        assert intent != null;
         Intent mainIntent = Intent.makeRestartActivityTask(intent.getComponent());
         mainIntent.setPackage(activity.getPackageName());
         activity.startActivity(mainIntent);

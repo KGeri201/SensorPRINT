@@ -18,6 +18,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static SensorManager sensorManager;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        Utils.setFilesDir(getExternalFilesDir(null));
+        Utils.setFilesDir(Objects.requireNonNull(getExternalFilesDir(null)));
     }
 
     @Override

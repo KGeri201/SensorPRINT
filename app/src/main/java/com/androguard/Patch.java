@@ -3,7 +3,6 @@ package com.androguard;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
 
 import android.hardware.SensorEvent;
 import android.hardware.Sensor;
@@ -28,12 +27,10 @@ public class Patch {
     public static final int AXIS_Z = 2;
     public static final File config = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "androguard.json");
 
-    private static final HashMap<Integer, float[]> previous_values = new HashMap<>();
-
     /**
      * ...
      */
-    private static JSONObject corrections;
+    private static JSONObject corrections = new JSONObject();
 
     /**
      * ...
@@ -72,6 +69,7 @@ public class Patch {
      * @return SensorEvent the modified event.
      * @see SensorEvent
      */
+    @SuppressWarnings("UnusedReturnValue")
     public SensorEvent manipulateValues(@NonNull SensorEvent event)  {
         try {
             final int type = event.sensor.getType();
@@ -88,8 +86,6 @@ public class Patch {
                 default:
                     break;
             }
-
-            previous_values.put(type, event.values.clone());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
