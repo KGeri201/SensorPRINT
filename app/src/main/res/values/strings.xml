@@ -24,7 +24,7 @@
     <string name="lg_acc_stg_def">0.5</string>
     <string name="lg_gyro_stg_def">0.5</string>
 
-    <string name="dialog_title" translatable="false">AndroGUARD</string>
+    <string name="dialog_title" translatable="false">SensorGUARD</string>
     <string name="androguard_msg">Calibration is needed.</string>
     <string name="start_calibration">Place the device on a flat surface.</string>
     <string name="calibration_in_progress">Calibration in progress</string>

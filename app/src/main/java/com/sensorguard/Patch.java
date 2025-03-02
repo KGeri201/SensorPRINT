@@ -1,4 +1,4 @@
-package com.androguard;
+package com.sensorguard;
 
 import java.io.File;
 import java.io.IOException;

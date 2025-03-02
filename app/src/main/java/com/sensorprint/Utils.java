@@ -1,6 +1,6 @@
 package com.sensorprint;
 
-import com.androguard.Patch;
+import com.sensorguard.Patch;
 
 import android.annotation.SuppressLint;
 import android.hardware.Sensor;

@@ -1,6 +1,6 @@
 package com.sensorprint;
 
-import com.androguard.PatchCalibration;
+import com.sensorguard.PatchCalibration;
 
 import android.os.Bundle;
 
